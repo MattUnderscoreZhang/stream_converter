@@ -1,24 +1,18 @@
-from typing import Protocol, Generator, Callable
+from typing import Generator, Callable, Generator
 
 
-class ByteStream(Protocol):
-    def read(self) -> bytes:
-        ...
-
-
-def stream_object_converter(
-    input_stream: ByteStream,
+def convert_function_stream(
+    stream_function: Callable,
     conversion_function: Callable,
 ) -> Generator[str, None, None]:
     while True:
-        audio_chunk = input_stream.read()
-        yield conversion_function(audio_chunk)
+        stream_chunk = stream_function()
+        yield conversion_function(stream_chunk)
 
 
-def stream_function_converter(
-    input_function: Callable,
+def convert_generator_stream(
+    stream_generator: Generator,
     conversion_function: Callable,
 ) -> Generator[str, None, None]:
-    while True:
-        audio_chunk = input_function()
-        yield conversion_function(audio_chunk)
+    for stream_chunk in stream_generator:
+        yield conversion_function(stream_chunk)

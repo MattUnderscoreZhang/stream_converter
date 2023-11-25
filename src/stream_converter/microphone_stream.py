@@ -1,14 +1,25 @@
 import pyaudio
-from typing import Optional
+from typing import Optional, Self, Generator
 
 
-class StreamWrapper:
-    def __init__(self, stream: pyaudio.Stream, frames_per_buffer: int):
-        self.stream = stream
-        self.frames_per_buffer = frames_per_buffer
+def get_microphone_stream_generator() -> Generator[bytes, None, None]:
+    audio = pyaudio.PyAudio()
+    frames_per_buffer = 1024
+    microphone_stream = audio.open(
+        format=pyaudio.paFloat32,             # audio format (e.g., paFloat32 for float32)
+        channels=1,                           # number of audio channels
+        rate=44100,                           # bit rate (samples per second)
+        frames_per_buffer=frames_per_buffer,  # number of frames per buffer
+        input=True,
+    )
 
-    def read(self) -> bytes:
-        return self.stream.read(self.frames_per_buffer, exception_on_overflow=False)
+    try:
+        while True:
+            yield microphone_stream.read(frames_per_buffer, exception_on_overflow=False)
+    finally:
+        microphone_stream.stop_stream()
+        microphone_stream.close()
+        audio.terminate()
 
 
 class MicrophoneStream:
@@ -23,10 +34,6 @@ class MicrophoneStream:
         self.channels: int = channels
         self.rate: int = rate
         self.frames_per_buffer: int = frames_per_buffer
-        self.audio: Optional[pyaudio.PyAudio] = None
-        self.stream: Optional[pyaudio.Stream] = None
-
-    def __enter__(self) -> StreamWrapper:
         self.audio = pyaudio.PyAudio()
         self.stream = self.audio.open(
             format=self.format,                        # audio format (e.g., paFloat32 for float32)
@@ -35,7 +42,12 @@ class MicrophoneStream:
             frames_per_buffer=self.frames_per_buffer,  # number of frames per buffer
             input=True,
         )
-        return StreamWrapper(self.stream, self.frames_per_buffer)
+
+    def read(self) -> bytes:
+        return self.stream.read(self.frames_per_buffer, exception_on_overflow=False)
+
+    def __enter__(self) -> Self:
+        return self
 
     def __exit__(
         self,
