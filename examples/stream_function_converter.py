@@ -13,13 +13,15 @@ if __name__ == "__main__":
         frames_per_buffer=frames_per_buffer,  # number of frames per buffer
         input=True,
     )
+    read_from_microphone = lambda: microphone_stream.read(frames_per_buffer, exception_on_overflow=False)
 
     try:
-        read_microphone_stream = lambda: microphone_stream.read(frames_per_buffer, exception_on_overflow=False)
-        for n_chunks, converted_chunk in enumerate(stream_function_converter(read_microphone_stream)):
+        converted_stream = stream_function_converter(
+            input_function=read_from_microphone,
+            conversion_function=lambda byte: str(byte),
+        )
+        for converted_chunk in converted_stream:
             print(converted_chunk)
-            if n_chunks >= 40:  # about 1 second
-                break
     except KeyboardInterrupt:
         pass
 

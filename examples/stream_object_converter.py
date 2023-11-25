@@ -1,9 +1,9 @@
 import pyaudio
 
-from stream_converter.converter import stream_object_converter, AudioStream
+from stream_converter.converter import stream_object_converter, ByteStream
 
 
-class MicrophoneStream(AudioStream):
+class MicrophoneStream(ByteStream):
     def __init__(self):
         self.audio = pyaudio.PyAudio()
         self.frames_per_buffer = 1024
@@ -16,6 +16,9 @@ class MicrophoneStream(AudioStream):
         )
 
     def read(self) -> bytes:
+        """
+        This is the only method that needs to be implemented.
+        """
         return self.microphone_stream.read(self.frames_per_buffer, exception_on_overflow=False)
 
     def close(self):
@@ -27,10 +30,12 @@ class MicrophoneStream(AudioStream):
 if __name__ == "__main__":
     microphone_stream = MicrophoneStream()
     try:
-        for n_chunks, converted_chunk in enumerate(stream_object_converter(microphone_stream)):
+        converted_stream = stream_object_converter(
+            input_stream=microphone_stream,
+            conversion_function=lambda byte: str(byte),
+        )
+        for converted_chunk in converted_stream:
             print(converted_chunk)
-            if n_chunks >= 40:  # about 1 second
-                break
     except KeyboardInterrupt:
         pass
     microphone_stream.close()
