@@ -53,6 +53,7 @@ from stream_converter.converter import convert_generator_stream, convert_functio
 from stream_converter.microphone_stream import get_microphone_stream_generator, MicrophoneStream
 
 
+# generator
 converted_stream = convert_generator_stream(
     stream_generator=get_microphone_stream_generator(),
     conversion_function=lambda byte: str(byte),
@@ -61,6 +62,7 @@ for converted_chunk in converted_stream:
     print(converted_chunk)
 
 
+# function
 with MicrophoneStream() as microphone_stream:
     converted_stream = convert_function_stream(
         stream_function=microphone_stream.read,
