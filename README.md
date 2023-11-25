@@ -1,3 +1,1 @@
-# streaming_whisper
-
-A streaming version of Whisper to handle real-time audio inputs.
+A package for applying real-time transformations on streaming data.

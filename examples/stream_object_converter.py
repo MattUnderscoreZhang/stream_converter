@@ -1,6 +1,6 @@
 import pyaudio
 
-from streaming_whisper.converter import stream_converter, AudioStream
+from stream_converter.converter import stream_object_converter, AudioStream
 
 
 class MicrophoneStream(AudioStream):
@@ -27,7 +27,7 @@ class MicrophoneStream(AudioStream):
 if __name__ == "__main__":
     microphone_stream = MicrophoneStream()
     try:
-        for n_chunks, converted_chunk in enumerate(stream_converter(microphone_stream)):
+        for n_chunks, converted_chunk in enumerate(stream_object_converter(microphone_stream)):
             print(converted_chunk)
             if n_chunks >= 40:  # about 1 second
                 break

@@ -1,6 +1,6 @@
 import pyaudio
 
-from streaming_whisper.converter import bytes_converter
+from stream_converter.converter import bytes_converter
 
 
 if __name__ == "__main__":
@@ -16,7 +16,6 @@ if __name__ == "__main__":
 
     converter = bytes_converter()
     next(converter)  # get "START" from generator
-    # for _ in range(1000):  # about 23 seconds
     for _ in range(40):  # about 1 second
         try:
             audio_chunk = microphone_stream.read(frames_per_buffer)

@@ -1,8 +1,8 @@
 
 [project]
-name = "streaming_whisper"
+name = "stream_converter"
 version = "0.1.0"
-description = "A streaming version of Whisper to handle real-time audio inputs."
+description = "A package for applying real-time transformations on streaming data."
 authors = [
     {name = "Matt Zhang", email = "set.stun@gmail.com"},
 ]
@@ -16,3 +16,4 @@ license = {text = "MIT"}
 [build-system]
 requires = ["pdm-backend"]
 build-backend = "pdm.backend"
+

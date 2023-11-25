@@ -1,6 +1,6 @@
 from typing import Protocol, Generator, Callable
 
-from streaming_whisper.conversion_function import whisper_conversion
+from stream_converter.conversion_function import whisper_conversion
 
 
 class AudioStream(Protocol):
@@ -8,7 +8,7 @@ class AudioStream(Protocol):
         ...
 
 
-def stream_converter(input_stream: AudioStream) -> Generator[str, None, None]:
+def stream_object_converter(input_stream: AudioStream) -> Generator[str, None, None]:
     while True:
         audio_chunk = input_stream.read()
         yield whisper_conversion(audio_chunk)

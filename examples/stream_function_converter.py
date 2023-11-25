@@ -1,6 +1,6 @@
 import pyaudio
 
-from streaming_whisper.converter import stream_function_converter
+from stream_converter.converter import stream_function_converter
 
 
 if __name__ == "__main__":

@@ -1,5 +1,5 @@
-from streaming_whisper.converter import stream_function_converter
-from streaming_whisper.microphone_stream import MicrophoneStream
+from stream_converter.converter import stream_function_converter
+from stream_converter.microphone_stream import MicrophoneStream
 
 
 if __name__ == "__main__":
