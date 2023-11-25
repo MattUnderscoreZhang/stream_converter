@@ -1,4 +1,4 @@
-A package with simple interfaces for applying transformation functions to streaming data.
+A simple package for applying transformations to streaming data.
 
 # Stream Conversion
 
@@ -6,7 +6,7 @@ This package can handle stream functions and stream generators.
 
 Here's an example with functions:
 
-```
+```python
 from random import randint
 from stream_converter.converter import convert_function_stream
 
@@ -25,7 +25,7 @@ for converted_chunk in converted_stream:
 
 And here's an example with generators:
 
-```
+```python
 from random import randint
 from typing import Generator
 from stream_converter.converter import convert_generator_stream
@@ -48,7 +48,7 @@ for converted_chunk in converted_stream:
 
 ## Microphone via PyAudio
 
-```
+```python
 from stream_converter.converter import convert_generator_stream, convert_function_stream
 from stream_converter.microphone_stream import get_microphone_stream_generator, MicrophoneStream
 
